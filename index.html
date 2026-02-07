@@ -30,9 +30,10 @@ body::before {
   z-index: -1;
 }
 
+/* Valentine text */
 #valentineText {
   font-family: 'Great Vibes', cursive;
-  font-size: 100px;
+  font-size: 90px;
   color: black;
   font-weight: bold;
   text-shadow: 2px 2px 10px rgba(255,0,100,0.4);
@@ -40,7 +41,7 @@ body::before {
 
 #loveText {
   font-family: 'Great Vibes', cursive;
-  font-size: 100px;
+  font-size: 90px;
   color: black;
   display: none;
   text-shadow: 2px 2px 20px rgba(255,0,100,0.7);
@@ -48,26 +49,30 @@ body::before {
 
 #loveQuote {
   font-family: 'Great Vibes', cursive;
-  font-size: 70px;
+  font-size: 60px;
   color: #b30059;
   display: none;
+  margin-top: 10px;
 }
 
+/* Penguin */
 .penguin img {
-  width: 300px;
+  width: 280px;
   animation: beat 1s infinite;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 @keyframes beat {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  50% { transform: scale(1.15); }
 }
 
+/* Buttons */
 .btn-container {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   margin-top: 20px;
+  position: relative;
 }
 
 button {
@@ -78,11 +83,19 @@ button {
   cursor: pointer;
 }
 
-#yes { background:#00ff99; font-weight:bold; }
-#no { background:#ff3333; color:white; position:absolute; }
+#yes {
+  background:#00ff99;
+  font-weight:bold;
+}
 
+#no {
+  background:#ff3333;
+  color:white;
+}
+
+/* Floating hearts */
 .floating-heart {
-  position: absolute;
+  position: fixed;
   font-size: 20px;
   animation: floatUp 6s linear infinite;
 }
@@ -92,8 +105,9 @@ button {
   to { transform: translateY(-10vh); opacity: 0; }
 }
 
+/* Explosion hearts */
 .fly-heart {
-  position: absolute;
+  position: fixed;
   font-size: 30px;
   animation: fly 2s ease-out forwards;
 }
@@ -114,28 +128,44 @@ button {
   <source src="love.mp3" type="audio/mpeg">
 </audio>
 
+<!-- Penguin -->
 <div class="penguin">
   <img src="penguin.png">
 </div>
 
+<!-- Text -->
 <h1 id="valentineText">Will you be my Valentine? 💘</h1>
 <div id="loveText">I love you too ❤️</div>
 <div id="loveQuote">In a world full of temporary people, I found my forever in you.</div>
 
+<!-- Buttons -->
 <div class="btn-container">
   <button id="yes">YES 💕</button>
   <button id="no">NO 💔</button>
 </div>
 
 <script>
-// NO button runaway
+/* ================= NO BUTTON MOVE FIX ================= */
 const noBtn = document.getElementById("no");
-noBtn.addEventListener("mouseover", () => {
-  noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-  noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
-});
 
-// Floating hearts
+function moveNoButton() {
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+// Desktop
+noBtn.addEventListener("mouseover", moveNoButton);
+// Mobile
+noBtn.addEventListener("touchstart", moveNoButton);
+
+/* ============== Floating hearts background ============== */
 function createFloatingHearts() {
   const heart = document.createElement("div");
   heart.classList.add("floating-heart");
@@ -146,12 +176,12 @@ function createFloatingHearts() {
 }
 setInterval(createFloatingHearts, 500);
 
-// YES CLICK
+/* ================= YES BUTTON ================= */
 document.getElementById("yes").onclick = () => {
 
-  // PLAY MUSIC
+  // Play music
   const music = document.getElementById("bgMusic");
-  music.play().catch(e => console.log("Audio blocked:", e));
+  music.play().catch(e => console.log("Audio blocked"));
 
   // Change text
   document.getElementById("valentineText").style.display = "none";
