@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Proposal 💘</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  height: 100vh;
+  background: url('herts-bg.jpg') no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  z-index: -1;
+}
+
+#valentineText {
+  font-family: 'Great Vibes', cursive;
+  font-size: 100px;
+  color: black;
+  font-weight: bold;
+  text-shadow: 2px 2px 10px rgba(255,0,100,0.4);
+}
+
+#loveText {
+  font-family: 'Great Vibes', cursive;
+  font-size: 100px;
+  color: black;
+  display: none;
+  text-shadow: 2px 2px 20px rgba(255,0,100,0.7);
+}
+
+#loveQuote {
+  font-family: 'Great Vibes', cursive;
+  font-size: 70px;
+  color: #b30059;
+  display: none;
+}
+
+.penguin img {
+  width: 300px;
+  animation: beat 1s infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes beat {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.btn-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 15px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+#yes { background:#00ff99; font-weight:bold; }
+#no { background:#ff3333; color:white; position:absolute; }
+
+.floating-heart {
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+.fly-heart {
+  position: absolute;
+  font-size: 30px;
+  animation: fly 2s ease-out forwards;
+}
+
+@keyframes fly {
+  to {
+    transform: translate(var(--x), var(--y)) scale(2);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="bgMusic">
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<div class="penguin">
+  <img src="penguin.png">
+</div>
+
+<h1 id="valentineText">Will you be my Valentine? 💘</h1>
+<div id="loveText">I love you too ❤️</div>
+<div id="loveQuote">In a world full of temporary people, I found my forever in you.</div>
+
+<div class="btn-container">
+  <button id="yes">YES 💕</button>
+  <button id="no">NO 💔</button>
+</div>
+
+<script>
+// NO button runaway
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+});
+
+// Floating hearts
+function createFloatingHearts() {
+  const heart = document.createElement("div");
+  heart.classList.add("floating-heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createFloatingHearts, 500);
+
+// YES CLICK
+document.getElementById("yes").onclick = () => {
+
+  // PLAY MUSIC
+  const music = document.getElementById("bgMusic");
+  music.play().catch(e => console.log("Audio blocked:", e));
+
+  // Change text
+  document.getElementById("valentineText").style.display = "none";
+  document.getElementById("loveText").style.display = "block";
+  document.getElementById("loveQuote").style.display = "block";
+  document.querySelector(".btn-container").style.display = "none";
+
+  // Heart explosion
+  for (let i = 0; i < 150; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("fly-heart");
+    heart.innerHTML = "💖";
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+    heart.style.setProperty("--x", (Math.random()*1000 - 500) + "px");
+    heart.style.setProperty("--y", (Math.random()*1000 - 500) + "px");
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
+};
+</script>
+
+</body>
+</html>
